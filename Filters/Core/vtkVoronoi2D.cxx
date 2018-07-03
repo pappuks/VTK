@@ -113,6 +113,17 @@ struct VTile
     this->TileX[0] = 0.0;
     this->TileX[1] = 0.0;
     this->Verts.reserve(24);
+    // Suppress paternalistic compiler warnings
+    this->PaddedBounds[0] = this->PaddedBounds[1] = 0.0;
+    this->PaddedBounds[2] = this->PaddedBounds[3] = 0.0;
+    this->Bounds[0] = this->Bounds[1] = 0.0;
+    this->Bounds[2] = this->Bounds[3] = 0.0;
+    this->Divisions[0] = this->Divisions[1] = 0;
+    this->H[0] = this->H[1] = this->BucketRadius = 0.0;
+    this->SpiralOrigin[0] = this->SpiralOrigin[1] = 0;
+    this->SpiralX = this->SpiralY = this->SpiralDelX = this->SpiralDelY = 0;
+    this->FMinIJ[0] = this->FMinIJ[1] = 0;
+    this->FMaxIJ[0] = this->FMaxIJ[1] = 0;
   }
 
   // Initialize with a generating point - the resulting tile is just the
@@ -970,7 +981,6 @@ int vtkVoronoi2D::RequestData(
     vtkIdType npts, *p;
     output->GetBounds(bds);
     output->GetCenter(center);
-    length = output->GetLength();
     tiles->InitTraversal(); tiles->GetNextCell(npts,p);
     VTile tile;
     tPoints->GetPoint(this->PointOfInterest,tileX);
@@ -1003,7 +1013,7 @@ int vtkVoronoi2D::RequestData(
     fPts->Delete();
     fVerts->Delete();
 
-    // Now udpate the vtkSpheres implicit function, and create a third output
+    // Now update the vtkSpheres implicit function, and create a third output
     // that has the PointOfInterested-associated tile, with scalar values at
     // each point which are the radii of the error circles (and when taken
     // together form the Voronoi flower).

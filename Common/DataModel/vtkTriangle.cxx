@@ -69,10 +69,10 @@ double vtkTriangle::ComputeArea()
 
 //----------------------------------------------------------------------------
 // Create a new cell and copy this triangle's information into the cell.
-// Returns a poiner to the new cell created.
-int vtkTriangle::EvaluatePosition(double x[3], double* closestPoint,
+// Returns a pointer to the new cell created.
+int vtkTriangle::EvaluatePosition(const double x[3], double closestPoint[3],
                                  int& subId, double pcoords[3],
-                                 double& dist2, double *weights)
+                                 double& dist2, double weights[])
 {
   int i, j;
   double pt1[3], pt2[3], pt3[3], n[3], fabsn;
@@ -262,7 +262,7 @@ int vtkTriangle::EvaluatePosition(double x[3], double* closestPoint,
 }
 
 //----------------------------------------------------------------------------
-void vtkTriangle::EvaluateLocation(int& vtkNotUsed(subId), double pcoords[3],
+void vtkTriangle::EvaluateLocation(int& vtkNotUsed(subId), const double pcoords[3],
                                    double x[3], double *weights)
 {
   double u3;
@@ -288,7 +288,7 @@ void vtkTriangle::EvaluateLocation(int& vtkNotUsed(subId), double pcoords[3],
 //----------------------------------------------------------------------------
 // Compute iso-parametric interpolation functions
 //
-void vtkTriangle::InterpolationFunctions(double pcoords[3], double sf[3])
+void vtkTriangle::InterpolationFunctions(const double pcoords[3], double sf[3])
 {
   sf[0] = 1. - pcoords[0] - pcoords[1];
   sf[1] = pcoords[0];
@@ -296,7 +296,7 @@ void vtkTriangle::InterpolationFunctions(double pcoords[3], double sf[3])
 }
 
 //----------------------------------------------------------------------------
-void vtkTriangle::InterpolationDerivs(double *, double derivs[6])
+void vtkTriangle::InterpolationDerivs(const double *, double derivs[6])
 {
   //r-derivatives
   derivs[0] = -1;
@@ -310,7 +310,7 @@ void vtkTriangle::InterpolationDerivs(double *, double derivs[6])
 }
 
 //----------------------------------------------------------------------------
-int vtkTriangle::CellBoundary(int vtkNotUsed(subId), double pcoords[3],
+int vtkTriangle::CellBoundary(int vtkNotUsed(subId), const double pcoords[3],
                               vtkIdList *pts)
 {
   double t1=pcoords[0]-pcoords[1];
@@ -491,7 +491,7 @@ vtkCell *vtkTriangle::GetEdge(int edgeId)
 //----------------------------------------------------------------------------
 // Plane intersection plus in/out test on triangle. The in/out test is
 // performed using tol as the tolerance.
-int vtkTriangle::IntersectWithLine(double p1[3], double p2[3], double tol,
+int vtkTriangle::IntersectWithLine(const double p1[3], const double p2[3], double tol,
                                   double& t, double x[3], double pcoords[3],
                                   int& subId)
 {
@@ -596,8 +596,8 @@ int vtkTriangle::Triangulate(int vtkNotUsed(index), vtkIdList *ptIds,
 //----------------------------------------------------------------------------
 // Used a staged computation: first compute derivatives in local x'-y'
 // coordinate system; then convert into x-y-z modelling system.
-void vtkTriangle::Derivatives(int vtkNotUsed(subId), double vtkNotUsed(pcoords)[3],
-                              double *values, int dim, double *derivs)
+void vtkTriangle::Derivatives(int vtkNotUsed(subId), const double vtkNotUsed(pcoords)[3],
+                              const double *values, int dim, double *derivs)
 {
   double v0[2], v1[2], v2[2], v[3], v10[3], v20[3], lenX;
   double x0[3], x1[3], x2[3], n[3];
@@ -1014,7 +1014,7 @@ int CoplanarTrianglesIntersect(double p1[2], double q1[2], double r1[2],
                                double p2[2], double q2[2], double r2[2])
 {
   // Determine whether or not triangle T1 = (p1,q1,r1) intersects triangle
-  // T2 = (p2,q2,r2), assumming that they are coplanar. This method is adapted
+  // T2 = (p2,q2,r2), assuming that they are coplanar. This method is adapted
   // from Olivier Devillers, Philippe Guigue. Faster Triangle-Triangle
   // Intersection Tests. RR-4488, IN-RIA. 2002. <inria-00072100>
 
@@ -1484,7 +1484,7 @@ int vtkTriangle::PointInTriangle(double x[3], double p1[3], double p2[3],
 }
 
 //----------------------------------------------------------------------------
-double vtkTriangle::GetParametricDistance(double pcoords[3])
+double vtkTriangle::GetParametricDistance(const double pcoords[3])
 {
   int i;
   double pDist, pDistMax=0.0;

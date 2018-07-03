@@ -39,6 +39,7 @@ set(headers
   vtkmContour.h
   vtkmExternalFaces.h
   vtkmExtractVOI.h
+  vtkmHistogram.h
   vtkmThreshold.h
   vtkmLevelOfDetail.h
   vtkmGradient.h
@@ -56,6 +57,7 @@ set(cpu_accelerator_srcs
   vtkmContour.cxx
   vtkmExternalFaces.cxx
   vtkmExtractVOI.cxx
+  vtkmHistogram.cxx
   vtkmThreshold.cxx
   vtkmLevelOfDetail.cxx
   vtkmCellSetExplicit.cxx
@@ -77,6 +79,7 @@ set(cuda_accelerator_srcs
   vtkmContour.cu
   vtkmExternalFaces.cu
   vtkmExtractVOI.cu
+  vtkmHistogram.cu
   vtkmThreshold.cu
   vtkmLevelOfDetail.cu
   vtkmAverageToCells.cu
@@ -139,7 +142,7 @@ set_property(GLOBAL APPEND PROPERTY JOB_POOLS vtkm_pool=${vtkm_pool_size})
 
 if(TARGET vtkm::cuda)
   #we are building with CUDA support
-  cmake_minimum_required(VERSION 3.9 FATAL_ERROR)
+  cmake_minimum_required(VERSION 3.9...3.12 FATAL_ERROR)
   enable_language(CUDA)
 
   # Workaround cmake issue #7519 which causes the c++11 flag set for VTK-m using
@@ -154,7 +157,7 @@ if(TARGET vtkm::cuda)
 
   # Temporarily suppress "has address taken but no possible call to it" warnings,
   # until we figure out its implications.
-  # We are diabling all warnings as nvlink has no known way to suppress
+  # We are disabling all warnings as nvlink has no known way to suppress
   # individual warning types.
   set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -Xnvlink -w")
 

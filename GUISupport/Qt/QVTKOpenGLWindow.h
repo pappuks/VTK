@@ -19,6 +19,7 @@
 #include "vtkSmartPointer.h" // Required for smart pointer internal ivars.
 #include <QOpenGLWindow>
 
+class QOffscreenSurface;
 // Forward VTK class declarations
 class QVTKInteractorAdapter;
 class vtkEventQtSlotConnect;
@@ -188,7 +189,7 @@ public slots:
     void* client_data, void* call_data);
 
   /**
-   * slot to process events comming from the widget containing this window
+   * slot to process events coming from the widget containing this window
    */
   virtual void widgetEvent(QEvent* e);
 
@@ -230,7 +231,7 @@ protected:
 
 private:
   /**
-   * internal VTK rendern window
+   * internal VTK render window
    */
   vtkSmartPointer<vtkGenericOpenGLRenderWindow> RenderWindow;
 
@@ -242,6 +243,8 @@ private:
    */
   QVTKInteractorAdapter* IrenAdapter;
   vtkSmartPointer<vtkEventQtSlotConnect> EventSlotConnector;
+
+  QOffscreenSurface* OffscreenSurface;
 };
 
 #endif // QVTKOpenGLWindow_H
